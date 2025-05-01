@@ -734,11 +734,10 @@ CSS TABLE OF CONTENTS
     /*===========================================
 	=         Popup Sidebox         =
     =============================================*/
+    
     function sideBox() {
     $("body").removeClass("open-sidebar");
     
-    // 添加遮罩层
-    $('body').append('<div id="sidebar-overlay"></div>');
 
     // 打开/关闭侧边栏
     $(document).on("click", ".sidebar-trigger", function (e) {
@@ -746,14 +745,17 @@ CSS TABLE OF CONTENTS
         $("body").toggleClass("open-sidebar");
     });
 
-    // 关闭侧边栏（点击关闭按钮、遮罩层或外部区域）
+    // 新增点击外部关闭逻辑
     $(document).on("click", function(e) {
         const sidebar = $('#sidebar-area');
         const triggerBtn = $('.sidebar-trigger.open');
         
-        // 当点击的元素不在侧边栏内且不是触发按钮时
-        if (!sidebar.is(e.target) && sidebar.has(e.target).length === 0 
-            && !triggerBtn.is(e.target) && triggerBtn.has(e.target).length === 0) {
+        // 判断点击区域是否在侧边栏或触发按钮外
+        if (!sidebar.is(e.target) && 
+            sidebar.has(e.target).length === 0 && 
+            !triggerBtn.is(e.target) && 
+            triggerBtn.has(e.target).length === 0) {
+            
             $("body.open-sidebar").removeClass("open-sidebar");
         }
     });
@@ -766,20 +768,61 @@ CSS TABLE OF CONTENTS
 }
 
 
-
-    document.addEventListener('DOMContentLoaded', function() {
-    // 获取箭头图标和侧边栏触发按钮
-    const arrowLink = document.querySelector('.client-count-box a[href="#!"]');
-    const sidebarTrigger = $('.sidebar-trigger.open')[0]; // 改为jQuery选择器获取原生DOM元素
-
-    if (arrowLink && sidebarTrigger) {
-        arrowLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            $(sidebarTrigger).trigger('click'); // 改为触发jQuery点击事件
+// 在文档就绪后添加以下代码
+function initSocialButtons() {
+    // QQ/微信按钮点击处理
+    $('.social-btn[data-app]').on('click', function(e) {
+        e.preventDefault();
+        const app = $(this).data('app');
+        const urlMap = {
+            qq: 'tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1091796379',
+            wechat: 'weixin://dl/chat?13921285079'
+        };
+        
+        // 添加点击动画
+        gsap.to(this, {
+            scale: 0.9,
+            repeat: 1,
+            yoyo: true,
+            duration: 0.3
         });
-    }
-});
+        
+        // 尝试打开应用
+        setTimeout(() => window.location.href = urlMap[app], 300);
+    });
 
+    // GSAP 悬浮动画
+    $('.sidebar-social li').each(function() {
+        const item = $(this);
+        const qr = item.find('.qr-code')[0];
+        
+        // 鼠标进入
+        item.hover(
+            () => {
+                gsap.to(qr, {
+                    opacity: 1,
+                    scale: 1,
+                    y: -20,
+                    duration: 0.3,
+                    ease: "power2.out"
+                });
+            },
+            // 鼠标离开
+            () => {
+                gsap.to(qr, {
+                    opacity: 0,
+                    scale: 0.9,
+                    y: 0,
+                    duration: 0.2,
+                    ease: "power2.in"
+                });
+            }
+        );
+    });
+}
+
+// 在DOM加载完成后调用
+$(document).ready(initSocialButtons);
 
 
     /*===========================================
