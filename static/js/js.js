@@ -42,3 +42,39 @@ google.maps = google.maps || {};
   getScript("https://maps.googleapis.com/maps-api-v3/api/js/59/1/geometry.js");
   getScript("https://maps.googleapis.com/maps-api-v3/api/js/59/1/main.js");
 })();
+
+
+
+document.getElementById('contact_form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const form = e.target;
+  const formData = new FormData(form);
+  const submitBtn = form.querySelector('button[type="submit"]');
+  
+  // 显示加载状态
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 提交中...';
+
+  try {
+      const response = await fetch('/submit-form', {
+          method: 'POST',
+          body: formData
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+          alert(result.message);
+          form.reset(); // 清空表单
+      } else {
+          alert(`提交失败: ${result.error}`);
+      }
+      
+  } catch (error) {
+      alert('网络错误，请稍后重试');
+  } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span class="link-effect"><span class="btn-title">提交</span></span><i class="fa-regular fa-arrow-right-long"></i>';
+  }
+});
