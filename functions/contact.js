@@ -19,7 +19,7 @@ export async function onRequestPost(context) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email: "1091796379@qq.com" }] }],
+        personalizations: [{ to: [{ email: "2679447437qbz@gmail.com" }] }],
         from: { email: "noreply@virtue-evo.pages.dev", name: "Virtue Site" },
         subject: "📬 新的联系表单提交",
         content: [{
