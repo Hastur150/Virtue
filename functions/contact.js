@@ -30,8 +30,8 @@ export async function onRequestPost(context) {
         "Authorization": `Bearer ${resendKey}`
       },
       body: JSON.stringify({
-        from: "no-reply@resend.dev",
-        to: [email],             // 发给用户
+        from: "2679447437qbz@gmail.com",
+        to: ["2679447437qbz@gmail.com"],             // 发给用户
         cc: ["2679447437qbz@gmail.com"], // 抄送到你的邮箱
         subject: "🤝 谢谢你的咨询，我们已收到！",
         html: `
