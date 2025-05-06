@@ -775,9 +775,10 @@ function initSocialButtons() {
         e.preventDefault();
         const app = $(this).data('app');
         const urlMap = {
-            qq: 'tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1091796379',
-            wechat: 'weixin://dl/chat?13921285079'
+            qq: 'tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1091796379&web_src=oicqzone', // 修改了QQ协议链接
+            wechat: 'weixin://dl/add?13921285079' // 修改了微信协议链接
         };
+        
         
         // 添加点击动画
         gsap.to(this, {
