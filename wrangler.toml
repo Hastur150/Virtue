@@ -1,7 +1,0 @@
-[[d1_databases]]
-binding = "DB"                   # 在脚本里用 context.env.DB 访问
-database_name = "hastur_form"       # 你在 Dashboard 里创建的数据库名
-database_id = "7bc8ae92-5bb0-4f3d-bb0d-1f4132ab5f38"  # Dashboard 中展示的那个长 ID
-
-[vars]
-RESEND_API_KEY = "re_TxBq1uWB_NBjUmCsEX92L4oQsAiE1jJ3r"  # 你给的 Resend Key
