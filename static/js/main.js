@@ -775,8 +775,8 @@ function initSocialButtons() {
         e.preventDefault();
         const app = $(this).data('app');
         const urlMap = {
-            qq: 'tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1091796379&web_src=oicqzone', // 修改了QQ协议链接
-            wechat: 'weixin://dl/add?13921285079' // 修改了微信协议链接
+            qq: 'tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=1091796379',
+            wechat: 'weixin://dl/addcontact?username=13921285079'
         };
         
         
@@ -792,33 +792,43 @@ function initSocialButtons() {
         setTimeout(() => window.location.href = urlMap[app], 300);
     });
 
-    // GSAP 悬浮动画
+    // GSAP
     $('.sidebar-social li').each(function() {
         const item = $(this);
         const qr = item.find('.qr-code')[0];
-        
+        let isHovering = false; // 状态标记
+
         // 鼠标进入
-        item.hover(
-            () => {
-                gsap.to(qr, {
-                    opacity: 1,
-                    scale: 1,
-                    y: -20,
-                    duration: 0.3,
-                    ease: "power2.out"
-                });
-            },
-            // 鼠标离开
-            () => {
-                gsap.to(qr, {
-                    opacity: 0,
-                    scale: 0.9,
-                    y: 0,
-                    duration: 0.2,
-                    ease: "power2.in"
-                });
-            }
-        );
+        item.on('mouseenter', () => {
+            isHovering = true;
+            // 停止之前的动画并执行显示
+            gsap.killTweensOf(qr);
+            gsap.to(qr, {
+                opacity: 1,
+                scale: 1,
+                y: -20,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+
+        // 鼠标离开
+        item.on('mouseleave', () => {
+            isHovering = false;
+            // 延迟200ms检查是否真的离开（防止快速移动误判）
+            setTimeout(() => {
+                if (!isHovering) {
+                    gsap.killTweensOf(qr);
+                    gsap.to(qr, {
+                        opacity: 0,
+                        scale: 0.9,
+                        y: 0,
+                        duration: 0.2,
+                        ease: "power2.in"
+                    });
+                }
+            }, 200);
+        });
     });
 }
 
